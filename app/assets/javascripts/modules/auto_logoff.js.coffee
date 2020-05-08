@@ -15,12 +15,12 @@ class app.AutoLogoff
 
   logoff_timer = () ->
 
-    if document.URL.indexOf('session/new') > -1
-      return
-    if remaining_seconds <= 1
-      window.location = '/session/destroy?jumpto=' + window.location.pathname+"&autologout=true"
-
-      return
+    unless AuthConfig.keycloak_enabled?
+      if document.URL.indexOf('session/new') > -1
+        return
+      if remaining_seconds <= 1
+        window.location = '/session/destroy?jumpto=' + window.location.pathname+"&autologout=true"
+        return
 
     remaining_seconds -= 1
     $('#countdown').html humanize(remaining_seconds)
