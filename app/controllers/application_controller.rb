@@ -78,8 +78,10 @@ class ApplicationController < ActionController::Base
 
   def check_if_user_logged_in
     if current_user.nil?
-      session[:jumpto] = request.parameters
-      redirect_to session_new_path
+      unless request.path == '/session/local'
+        session[:jumpto] = request.parameters
+        redirect_to session_new_path
+      end
     end
   end
 

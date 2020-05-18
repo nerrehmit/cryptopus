@@ -19,18 +19,9 @@ class SessionController < ApplicationController
   before_action :skip_authorization, only: [:create, :new, :destroy]
 
   def create
-    unless authenticator.auth!
-      flash[:error] = t('flashes.session.auth_failed')
-      return redirect_to session_new_path
-    end
+    redirect_to check_if_auth_could_fail
 
-    unless create_session(authenticator.user, params[:password])
-      return redirect_to recryptrequests_new_ldap_password_path
-    end
-
-    last_login_message
-    check_password_strength
-    redirect_after_sucessful_login
+    successful_session_creation
   end
 
   def destroy
@@ -39,6 +30,10 @@ class SessionController < ApplicationController
 
   def show_update_password
     render :show_update_password
+  end
+
+  def local_root_login
+    render :local_root_login
   end
 
   def update_password
@@ -63,6 +58,28 @@ class SessionController < ApplicationController
   end
 
   private
+
+  def check_if_auth_could_fail
+    unless authenticator.auth!
+      flash[:error] = t('flashes.session.auth_failed')
+      return redirect_to session_new_path
+    end
+
+    if authenticator.user.username == 'root'
+      flash[:error] = 'fack'
+      return redirect_to session_new_path
+    end
+
+    unless create_session(authenticator.user, params[:password])
+      redirect_to recryptrequests_new_ldap_password_path
+    end
+  end
+
+  def successful_session_creation
+    last_login_message
+    check_password_strength
+    redirect_after_sucessful_login
+  end
 
   def last_login_message
     flash_message = Flash::LastLoginMessage.new(session)

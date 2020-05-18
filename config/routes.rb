@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   end
 
   get 'session/new', to: 'session#new'
+  get 'session/local', to: 'session#local_root_login'
   post 'session', to: 'session#create'
   get 'session/destroy', to: 'session#destroy'
   get 'session/show_update_password', to: 'session#show_update_password'

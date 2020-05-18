@@ -18,6 +18,10 @@ class SessionPolicy < ApplicationPolicy
     user.present? && !user.ldap?
   end
 
+  def local_root_login?
+    true
+  end
+
   def update_password?
     user.present? && !user.ldap?
   end
