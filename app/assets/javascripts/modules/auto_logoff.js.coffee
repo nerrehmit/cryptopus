@@ -15,7 +15,7 @@ class app.AutoLogoff
 
   logoff_timer = () ->
 
-    if document.URL.indexOf('session/new') > -1
+    if document.URL.indexOf('session/new') > -1 || document.URL.indexOf('session/sso/inactive') > -1
       return
     if remaining_seconds <= 1
       window.location = '/session/destroy?jumpto=' + window.location.pathname+"&autologout=true"

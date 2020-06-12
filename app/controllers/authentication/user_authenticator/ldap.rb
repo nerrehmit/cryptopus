@@ -40,6 +40,10 @@ class Authentication::UserAuthenticator::Ldap < Authentication::UserAuthenticato
     session[:user_id].present? && session[:private_key].present?
   end
 
+  def logged_out_path
+    session_new_path
+  end
+
   private
 
   def find_or_create_user

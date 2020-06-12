@@ -52,6 +52,10 @@ class Authentication::UserAuthenticator
     raise NotImplementedError, 'implement in subclass'
   end
 
+  def logged_out_path
+    raise NotImplementedError, 'implement in subclass'
+  end
+
   private
 
   attr_accessor :authenticated

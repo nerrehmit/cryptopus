@@ -28,6 +28,10 @@ class Authentication::UserAuthenticator::Db < Authentication::UserAuthenticator
     session[:user_id].present? && session[:private_key].present?
   end
 
+  def logged_out_path
+    session_new_path
+  end
+
   private
 
   def user_forbidden(allow_root, allow_api)
